@@ -21,7 +21,7 @@ echo "### Strong Scaling (N=1024) ###"
 for P in 2 4 8 16; do
     echo "=============================="
     echo "Ranks: $P"
-    srun --mpi=pmi2 -n $P ./cholesky_mpi 1024 3
+    srun --mpi=pmix_v5 -n $P ./cholesky_mpi 1024 3
 done
 echo "=============================="
 
@@ -31,5 +31,5 @@ echo "=============================="
 # ---------------------------------------------------------------------------
 echo "### Large Problem (N=2048, 16 ranks across 2 nodes) ###"
 echo "=============================="
-srun --mpi=pmi2 -n 16 ./cholesky_mpi 2048 3
+srun --mpi=pmix_v5 -n 16 ./cholesky_mpi 2048 3
 echo "=============================="

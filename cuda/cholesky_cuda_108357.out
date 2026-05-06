@@ -1,0 +1,80 @@
+ERROR: Unable to locate a modulefile for 'cuda'
+Wed May  6 19:56:02 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 570.172.08             Driver Version: 570.172.08     CUDA Version: 12.8     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA L4                      On  |   00000000:38:00.0 Off |                    0 |
+| N/A   40C    P8             11W /   72W |       0MiB /  23034MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+|   1  NVIDIA L4                      On  |   00000000:3A:00.0 Off |                    0 |
+| N/A   33C    P8             11W /   72W |       0MiB /  23034MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+|   2  NVIDIA L4                      On  |   00000000:3C:00.0 Off |                    0 |
+| N/A   38C    P8             11W /   72W |       0MiB /  23034MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+|   3  NVIDIA L4                      On  |   00000000:3E:00.0 Off |                    0 |
+| N/A   37C    P8             11W /   72W |       0MiB /  23034MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2025 NVIDIA Corporation
+Built on Fri_Feb_21_20:23:50_PST_2025
+Cuda compilation tools, release 12.8, V12.8.93
+Build cuda_12.8.r12.8/compiler.35583870_0
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+==============================
+CUDA Cholesky factorization: N = 512, repeats = 3
+  GPU: NVIDIA L4 (CC 8.9, 58 SMs)
+  run 1: 0.008844 s
+  run 2: 0.008944 s
+  run 3: 0.008876 s
+  Best time:  0.008844 s
+  Avg time:   0.008888 s
+  GFLOP/s:    5.059
+  Residual:   2.66e-11
+==============================
+CUDA Cholesky factorization: N = 1024, repeats = 3
+  GPU: NVIDIA L4 (CC 8.9, 58 SMs)
+  run 1: 0.021225 s
+  run 2: 0.021133 s
+  run 3: 0.021121 s
+  Best time:  0.021121 s
+  Avg time:   0.021160 s
+  GFLOP/s:    16.946
+  Residual:   1.48e-10
+==============================
+CUDA Cholesky factorization: N = 2048, repeats = 3
+  GPU: NVIDIA L4 (CC 8.9, 58 SMs)
+  run 1: 0.072178 s
+  run 2: 0.072232 s
+  run 3: 0.072146 s
+  Best time:  0.072146 s
+  Avg time:   0.072186 s
+  GFLOP/s:    39.688
+  Residual:   8.40e-10
+==============================
+CUDA Cholesky factorization: N = 3072, repeats = 3
+  GPU: NVIDIA L4 (CC 8.9, 58 SMs)
+  run 1: 0.241507 s
+  run 2: 0.241640 s
+  run 3: 0.240840 s
+  Best time:  0.240840 s
+  Avg time:   0.241329 s
+  GFLOP/s:    40.125
+  Residual:   2.30e-09
+==============================

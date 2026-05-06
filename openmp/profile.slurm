@@ -18,9 +18,24 @@
 # Both runs use the existing OpenMP binary at N=2048, 16 threads.
 # ---------------------------------------------------------------------------
 
+set -x
 source /shared/spack/share/spack/setup-env.sh
-spack load intel-oneapi-vtune
-which vtune || { echo "vtune not on PATH after spack load"; exit 1; }
+
+# Try multiple ways to bring vtune onto PATH.
+spack load intel-oneapi-vtune 2>&1 || true
+
+# Fallback: source vtune's own env script directly from its install prefix.
+if ! command -v vtune >/dev/null; then
+    VTUNE_PREFIX="$(spack location -i intel-oneapi-vtune 2>/dev/null || true)"
+    echo "VTUNE_PREFIX=$VTUNE_PREFIX"
+    if [ -n "$VTUNE_PREFIX" ] && [ -f "$VTUNE_PREFIX/vtune/latest/env/vars.sh" ]; then
+        source "$VTUNE_PREFIX/vtune/latest/env/vars.sh"
+    fi
+fi
+
+command -v vtune
+vtune --version || true
+set +x
 
 # Build with debug symbols so VTune can attribute samples to source lines.
 g++ -O3 -g -march=native -fopenmp \

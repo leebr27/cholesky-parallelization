@@ -1,0 +1,53 @@
+### Strong Scaling (N=1024) ###
+==============================
+Ranks: 2
+MPI Cholesky factorization: N = 1024, ranks = 2, repeats = 3
+  run 1: 0.102165 s
+  run 2: 0.093178 s
+  run 3: 0.100679 s
+  Best time:  0.093178 s
+  Avg time:   0.098674 s
+  GFLOP/s:    3.841
+  Residual:   1.48e-10
+==============================
+Ranks: 4
+MPI Cholesky factorization: N = 1024, ranks = 4, repeats = 3
+  run 1: 0.085336 s
+  run 2: 0.074927 s
+  run 3: 0.074562 s
+  Best time:  0.074562 s
+  Avg time:   0.078275 s
+  GFLOP/s:    4.800
+  Residual:   1.48e-10
+==============================
+Ranks: 8
+MPI Cholesky factorization: N = 1024, ranks = 8, repeats = 3
+  run 1: 0.050035 s
+  run 2: 0.046557 s
+  run 3: 0.046824 s
+  Best time:  0.046557 s
+  Avg time:   0.047806 s
+  GFLOP/s:    7.688
+  Residual:   1.48e-10
+==============================
+Ranks: 16
+MPI Cholesky factorization: N = 1024, ranks = 16, repeats = 3
+  run 1: 0.038195 s
+  run 2: 0.036596 s
+  run 3: 0.040005 s
+  Best time:  0.036596 s
+  Avg time:   0.038265 s
+  GFLOP/s:    9.780
+  Residual:   1.48e-10
+==============================
+### Large Problem (N=2048, 16 ranks across 2 nodes) ###
+==============================
+MPI Cholesky factorization: N = 2048, ranks = 16, repeats = 3
+  run 1: 0.155614 s
+  run 2: 0.156447 s
+  run 3: 0.149886 s
+  Best time:  0.149886 s
+  Avg time:   0.153982 s
+  GFLOP/s:    19.103
+  Residual:   8.40e-10
+==============================

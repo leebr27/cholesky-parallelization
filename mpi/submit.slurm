@@ -8,8 +8,14 @@
 #SBATCH --mem-per-cpu=1G
 #SBATCH --time=00:10:00
 
+# Load OpenMPI 5 — built with PMIx v5 support to match the cluster's srun launcher
+module load openmpi5/5.0.8amzn1
+
 # Compile with MPI C++ wrapper
 mpicxx -O3 -march=native -o cholesky_mpi cholesky_mpi.cpp -lm
+
+# Force PMIx to use the hash GDS component (avoids missing shmem2 component)
+export PMIX_MCA_gds=hash
 
 # ---------------------------------------------------------------------------
 # Strong scaling at N = 1024 across 2 nodes.

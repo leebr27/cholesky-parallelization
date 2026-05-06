@@ -8,9 +8,9 @@
 #SBATCH --mem-per-cpu=1G
 #SBATCH --time=00:10:00
 
-# Source the class Spack environment (provides python@3.12, mpi4py, numpy, openmpi5).
+# Source the class Spack environment (auto-activates CS-2050; provides
+# python@3.12, mpi4py, numpy, openmpi5).
 source /shared/spack/share/spack/setup-env.sh
-spack env activate CS-2050
 
 # Sanity check: show what we loaded.
 which python mpicxx

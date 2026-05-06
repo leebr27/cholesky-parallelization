@@ -19,6 +19,8 @@
 # ---------------------------------------------------------------------------
 
 source /shared/spack/share/spack/setup-env.sh
+spack load intel-oneapi-vtune
+which vtune || { echo "vtune not on PATH after spack load"; exit 1; }
 
 # Build with debug symbols so VTune can attribute samples to source lines.
 g++ -O3 -g -march=native -fopenmp \

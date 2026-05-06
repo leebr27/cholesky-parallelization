@@ -1,0 +1,37 @@
+==============================
+Serial Cholesky factorization: N = 256, repeats = 3
+  run 1: 0.003076 s
+  run 2: 0.003098 s
+  run 3: 0.003062 s
+  Best time:  0.003062 s
+  Avg time:   0.003079 s
+  GFLOP/s:    1.827
+  Residual:   5.10e-12
+==============================
+Serial Cholesky factorization: N = 512, repeats = 3
+  run 1: 0.058314 s
+  run 2: 0.058366 s
+  run 3: 0.058234 s
+  Best time:  0.058234 s
+  Avg time:   0.058305 s
+  GFLOP/s:    0.768
+  Residual:   2.65e-11
+==============================
+Serial Cholesky factorization: N = 1024, repeats = 3
+  run 1: 0.776923 s
+  run 2: 0.784023 s
+  run 3: 0.782731 s
+  Best time:  0.776923 s
+  Avg time:   0.781225 s
+  GFLOP/s:    0.461
+  Residual:   1.48e-10
+==============================
+Serial Cholesky factorization: N = 2048, repeats = 3
+  run 1: 13.164424 s
+  run 2: 12.739746 s
+  run 3: 12.502958 s
+  Best time:  12.502958 s
+  Avg time:   12.802376 s
+  GFLOP/s:    0.229
+  Residual:   8.40e-10
+==============================

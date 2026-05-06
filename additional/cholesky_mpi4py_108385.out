@@ -1,0 +1,56 @@
+/shared/courseSharedFolders/161588outer/161588/spack/var/spack/environments/CS-2050/.spack-env/view/bin/python
+/shared/courseSharedFolders/161588outer/161588/spack/var/spack/environments/CS-2050/.spack-env/view/bin/mpicxx
+mpi4py 4.1.1 numpy 2.3.5
+### Strong Scaling (N=1024) ###
+==============================
+Ranks: 2
+mpi4py Cholesky: N = 1024, ranks = 2, repeats = 3
+  run 1: 0.915454 s
+  run 2: 0.915191 s
+  run 3: 0.914531 s
+  Best time:  0.914531 s
+  Avg time:   0.915059 s
+  GFLOP/s:    0.391
+  Residual:   1.70e-10
+==============================
+Ranks: 4
+mpi4py Cholesky: N = 1024, ranks = 4, repeats = 3
+  run 1: 1.104984 s
+  run 2: 1.104961 s
+  run 3: 1.103367 s
+  Best time:  1.103367 s
+  Avg time:   1.104437 s
+  GFLOP/s:    0.324
+  Residual:   1.70e-10
+==============================
+Ranks: 8
+mpi4py Cholesky: N = 1024, ranks = 8, repeats = 3
+  run 1: 0.570403 s
+  run 2: 0.569766 s
+  run 3: 0.569891 s
+  Best time:  0.569766 s
+  Avg time:   0.570020 s
+  GFLOP/s:    0.628
+  Residual:   1.70e-10
+==============================
+Ranks: 16
+mpi4py Cholesky: N = 1024, ranks = 16, repeats = 3
+  run 1: 0.288484 s
+  run 2: 0.291415 s
+  run 3: 0.291349 s
+  Best time:  0.288484 s
+  Avg time:   0.290416 s
+  GFLOP/s:    1.241
+  Residual:   1.70e-10
+==============================
+### Large Problem (N=2048, 16 ranks across 2 nodes) ###
+==============================
+mpi4py Cholesky: N = 2048, ranks = 16, repeats = 3
+  run 1: 1.186167 s
+  run 2: 1.191869 s
+  run 3: 1.185425 s
+  Best time:  1.185425 s
+  Avg time:   1.187820 s
+  GFLOP/s:    2.415
+  Residual:   7.14e-10
+==============================

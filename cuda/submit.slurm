@@ -23,8 +23,11 @@ nvcc -O3 -arch=sm_70 -o cholesky_cuda cholesky_cuda.cu -lm
 # ---------------------------------------------------------------------------
 # Run a sweep of problem sizes to characterize GPU scaling.
 # Larger N is needed to amortize kernel-launch overhead and saturate the GPU.
+# Capped at N=3072: the naive rank-1-update formulation issues N kernel
+# launches with a per-column device sync, so per-launch overhead grows
+# linearly and limits achievable size within the 10-minute job window.
 # ---------------------------------------------------------------------------
-for N in 512 1024 2048 4096; do
+for N in 512 1024 2048 3072; do
     echo "=============================="
     ./cholesky_cuda $N 3
 done

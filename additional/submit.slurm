@@ -1,57 +1,40 @@
 #!/bin/bash
-#SBATCH --job-name=cholesky_torch
-#SBATCH --output=cholesky_torch_%j.out
-#SBATCH --partition=gpu
-#SBATCH --nodes=1
-#SBATCH --ntasks=1
-#SBATCH --cpus-per-task=4
-#SBATCH --mem-per-cpu=4G
-#SBATCH --gres=gpu:1
+#SBATCH --job-name=cholesky_mpi4py
+#SBATCH --output=cholesky_mpi4py_%j.out
+#SBATCH --partition=general
+#SBATCH --nodes=2
+#SBATCH --ntasks-per-node=8
+#SBATCH --cpus-per-task=1
+#SBATCH --mem-per-cpu=1G
 #SBATCH --time=00:10:00
 
-# ---------------------------------------------------------------------------
-# Bring up a Python environment with PyTorch.
-# Strategy: try a class-supplied module first; if not available, install
-# torch into a venv at runtime (works on cluster node with internet access).
-# ---------------------------------------------------------------------------
-module load python 2>/dev/null || module load anaconda 2>/dev/null || true
+# Source the class Spack environment (provides python@3.12, mpi4py, numpy, openmpi5).
+source /shared/spack/share/spack/setup-env.sh
+spack env activate CS-2050
 
-if ! python -c "import torch" 2>/dev/null; then
-    echo "PyTorch not present in environment — creating local venv."
-    python -m venv .venv
-    source .venv/bin/activate
-    python -m pip install --quiet --upgrade pip
-    # CUDA 12 build of PyTorch (matches CUDA 12.8 runtime on the cluster GPUs)
-    python -m pip install --quiet torch --index-url https://download.pytorch.org/whl/cu121
-fi
+# Sanity check: show what we loaded.
+which python mpicxx
+python -c "import mpi4py, numpy; print('mpi4py', mpi4py.__version__, 'numpy', numpy.__version__)"
 
-python -c "import torch; print('torch', torch.__version__, 'cuda', torch.cuda.is_available())"
-nvidia-smi | head -n 20 || true
+# Same PMIx workaround as the C++ MPI job.
+export PMIX_MCA_gds=hash
+export HOME="${HOME:-/home/$USER}"
 
 # ---------------------------------------------------------------------------
-# CPU runs — single thread to compare against the serial baseline, then
-# 16 threads to compare against OpenMP.
+# Strong scaling at N=1024 — direct comparison against the C++ MPI results.
 # ---------------------------------------------------------------------------
-echo "### CPU (1 thread) ###"
-for N in 512 1024 2048; do
+echo "### Strong Scaling (N=1024) ###"
+for P in 2 4 8 16; do
     echo "=============================="
-    OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 python cholesky_torch.py $N 3 cpu
-done
-echo "=============================="
-
-echo "### CPU (4 threads) ###"
-for N in 1024 2048; do
-    echo "=============================="
-    OMP_NUM_THREADS=4 MKL_NUM_THREADS=4 python cholesky_torch.py $N 3 cpu
+    echo "Ranks: $P"
+    srun --export=ALL --mpi=pmix_v5 -n $P python cholesky_mpi4py.py 1024 3
 done
 echo "=============================="
 
 # ---------------------------------------------------------------------------
-# GPU runs — direct comparison with the hand-rolled CUDA kernel in part 4.
+# Larger problem at full 16 ranks for direct comparison with cholesky_mpi.
 # ---------------------------------------------------------------------------
-echo "### GPU (cuSOLVER via PyTorch) ###"
-for N in 1024 2048 4096; do
-    echo "=============================="
-    python cholesky_torch.py $N 3 cuda
-done
+echo "### Large Problem (N=2048, 16 ranks across 2 nodes) ###"
+echo "=============================="
+srun --export=ALL --mpi=pmix_v5 -n 16 python cholesky_mpi4py.py 2048 3
 echo "=============================="

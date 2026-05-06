@@ -5,7 +5,7 @@
 #SBATCH --nodes=2
 #SBATCH --ntasks-per-node=8
 #SBATCH --cpus-per-task=1
-#SBATCH --mem=8G
+#SBATCH --mem-per-cpu=1G
 #SBATCH --time=00:10:00
 
 # Compile with MPI C++ wrapper

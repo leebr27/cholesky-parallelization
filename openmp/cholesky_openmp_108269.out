@@ -1,0 +1,94 @@
+### Strong Scaling (N=1024) ###
+==============================
+OpenMP Cholesky factorization: N = 1024, threads = 1, repeats = 3
+  run 1: 0.854345 s
+  run 2: 0.858232 s
+  run 3: 0.857949 s
+  Best time:  0.854345 s
+  Avg time:   0.856842 s
+  GFLOP/s:    0.419
+  Residual:   1.48e-10
+==============================
+OpenMP Cholesky factorization: N = 1024, threads = 2, repeats = 3
+  run 1: 0.351125 s
+  run 2: 0.351178 s
+  run 3: 0.350302 s
+  Best time:  0.350302 s
+  Avg time:   0.350869 s
+  GFLOP/s:    1.022
+  Residual:   1.48e-10
+==============================
+OpenMP Cholesky factorization: N = 1024, threads = 4, repeats = 3
+  run 1: 0.172627 s
+  run 2: 0.172024 s
+  run 3: 0.172090 s
+  Best time:  0.172024 s
+  Avg time:   0.172247 s
+  GFLOP/s:    2.081
+  Residual:   1.48e-10
+==============================
+OpenMP Cholesky factorization: N = 1024, threads = 8, repeats = 3
+  run 1: 0.089407 s
+  run 2: 0.089865 s
+  run 3: 0.090549 s
+  Best time:  0.089407 s
+  Avg time:   0.089940 s
+  GFLOP/s:    4.003
+  Residual:   1.48e-10
+==============================
+OpenMP Cholesky factorization: N = 1024, threads = 16, repeats = 3
+  run 1: 0.083965 s
+  run 2: 0.084217 s
+  run 3: 0.083800 s
+  Best time:  0.083800 s
+  Avg time:   0.083994 s
+  GFLOP/s:    4.271
+  Residual:   1.48e-10
+==============================
+### Weak Scaling ###
+==============================
+OpenMP Cholesky factorization: N = 512, threads = 1, repeats = 3
+  run 1: 0.061156 s
+  run 2: 0.061153 s
+  run 3: 0.061178 s
+  Best time:  0.061153 s
+  Avg time:   0.061162 s
+  GFLOP/s:    0.732
+  Residual:   2.65e-11
+==============================
+OpenMP Cholesky factorization: N = 645, threads = 2, repeats = 3
+  run 1: 0.024441 s
+  run 2: 0.024460 s
+  run 3: 0.024440 s
+  Best time:  0.024440 s
+  Avg time:   0.024447 s
+  GFLOP/s:    3.660
+  Residual:   5.60e-11
+==============================
+OpenMP Cholesky factorization: N = 812, threads = 4, repeats = 3
+  run 1: 0.025607 s
+  run 2: 0.025558 s
+  run 3: 0.025532 s
+  Best time:  0.025532 s
+  Avg time:   0.025566 s
+  GFLOP/s:    6.990
+  Residual:   7.98e-11
+==============================
+OpenMP Cholesky factorization: N = 1024, threads = 8, repeats = 3
+  run 1: 0.091856 s
+  run 2: 0.091762 s
+  run 3: 0.091712 s
+  Best time:  0.091712 s
+  Avg time:   0.091777 s
+  GFLOP/s:    3.903
+  Residual:   1.48e-10
+==============================
+OpenMP Cholesky factorization: N = 1290, threads = 16, repeats = 3
+  run 1: 0.279336 s
+  run 2: 0.279886 s
+  run 3: 0.279912 s
+  Best time:  0.279336 s
+  Avg time:   0.279711 s
+  GFLOP/s:    2.562
+  Residual:   3.12e-10
+==============================

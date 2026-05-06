@@ -1,0 +1,21 @@
+==============================
+Cholesky factorization: N = 1024, threads = 1
+  Best time:  0.877157 s
+  Residual:   1.48e-10
+==============================
+Cholesky factorization: N = 1024, threads = 2
+  Best time:  0.348698 s
+  Residual:   1.48e-10
+==============================
+Cholesky factorization: N = 1024, threads = 4
+  Best time:  0.180886 s
+  Residual:   1.48e-10
+==============================
+Cholesky factorization: N = 1024, threads = 8
+  Best time:  0.101428 s
+  Residual:   1.48e-10
+==============================
+Cholesky factorization: N = 1024, threads = 16
+  Best time:  0.091995 s
+  Residual:   1.48e-10
+==============================

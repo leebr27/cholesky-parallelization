@@ -11,6 +11,9 @@
 # Load OpenMPI 5 — built with PMIx v5 support to match the cluster's srun launcher
 module load openmpi5/5.0.8amzn1
 
+# Ensure HOME is set and propagated to compute nodes (OpenMPI needs it during init)
+export HOME="${HOME:-/home/$USER}"
+
 # Compile with MPI C++ wrapper
 mpicxx -O3 -march=native -o cholesky_mpi cholesky_mpi.cpp -lm
 
@@ -27,7 +30,7 @@ echo "### Strong Scaling (N=1024) ###"
 for P in 2 4 8 16; do
     echo "=============================="
     echo "Ranks: $P"
-    srun --mpi=pmix_v5 -n $P ./cholesky_mpi 1024 3
+    srun --export=ALL --mpi=pmix_v5 -n $P ./cholesky_mpi 1024 3
 done
 echo "=============================="
 
@@ -37,5 +40,5 @@ echo "=============================="
 # ---------------------------------------------------------------------------
 echo "### Large Problem (N=2048, 16 ranks across 2 nodes) ###"
 echo "=============================="
-srun --mpi=pmix_v5 -n 16 ./cholesky_mpi 2048 3
+srun --export=ALL --mpi=pmix_v5 -n 16 ./cholesky_mpi 2048 3
 echo "=============================="

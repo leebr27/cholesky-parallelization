@@ -12,9 +12,35 @@
 # diagonal update vs. the parallel sub-diagonal panel) on a 16-core node.
 # ---------------------------------------------------------------------------
 
-# Set up Spack environment (provides vtune, compilers, etc.)
-. ~/brl399/spack/share/spack/setup-env.sh
+# Set up Spack environment (provides vtune, compilers, etc.).
+# The setup script may live at ~/spack/... or ~/UID/spack/... depending on
+# how the cluster was configured.  Search for it automatically.
+SPACK_SETUP=""
+for candidate in \
+    "$HOME/spack/share/spack/setup-env.sh" \
+    "$HOME"/*/spack/share/spack/setup-env.sh; do
+    if [ -f "$candidate" ]; then
+        SPACK_SETUP="$candidate"
+        break
+    fi
+done
+
+if [ -z "$SPACK_SETUP" ]; then
+    echo "ERROR: Could not find spack/share/spack/setup-env.sh under $HOME" >&2
+    echo "Hint: run 'find ~ -name setup-env.sh 2>/dev/null' on the cluster to locate it." >&2
+    exit 1
+fi
+
+echo "Using Spack setup: $SPACK_SETUP"
+. "$SPACK_SETUP"
 spack env activate -p CS-2050-metal
+spack load intel-oneapi-vtune
+
+if ! command -v vtune >/dev/null 2>&1; then
+    echo "ERROR: 'vtune' not found after spack env activate." >&2
+    echo "Hint: run 'spack find | grep vtune' and 'spack load intel-oneapi-vtune' manually to check." >&2
+    exit 1
+fi
 
 vtune --version
 

@@ -39,11 +39,10 @@ ensuring that the comparisons below are fair and directly comparable.
 ### 2.1 Serial baseline
 
 [serial/cholesky_serial.cpp](serial/cholesky_serial.cpp) is a
-straightforward column-major C++ implementation, compiled with
-`g++ -O3 -march=native`. The matrix is generated as $A = M^T M + N I$
+straightforward column-major C++ implementation. The matrix is generated as $A = M^T M + N I$
 with `srand(42)` so that every implementation can be cross-checked
 against a deterministic reference. Timing uses
-`std::chrono::steady_clock` around the factorization only — generation
+`std::chrono::steady_clock` around the factorization only; generation
 and verification are excluded so that scaling numbers reflect true
 algorithmic cost.
 

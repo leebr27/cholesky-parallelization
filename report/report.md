@@ -143,7 +143,7 @@ the motivation for every parallel version that follows.
 | 8       | 0.089407  | 9.56×   | 120%       |
 | 16      | 0.083800  | 10.19×  | 64%        |
 
-Two things stand out. First, efficiency exceeds 100% for 2–8 threads —
+Two things stand out. First, efficiency exceeds 100% for 2–8 threads, an example of
 classic cache super-linearity. The 1-thread run is already memory-bound
 (0.461 GFLOP/s vs. the 1.8 GFLOP/s achieved at the cache-resident
 N=256), so distributing the working set across multiple core-private L2

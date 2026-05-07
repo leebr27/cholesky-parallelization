@@ -1,6 +1,6 @@
 # Parallelizing Cholesky Factorization
 
-**Brian Lee, CS205**
+**Brian Lee**
 
 ## 1. Introduction
 

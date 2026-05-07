@@ -59,8 +59,7 @@ for (int i = j+1; i < N; ++i) { /* row i update */ }
 
 partitions the sub-diagonal rows across threads. Static scheduling is
 optimal here because each row does the same amount of work
-($O(j)$ flops). There is one implicit team barrier per column — N=1024
-of them — which becomes the dominant overhead at high thread counts.
+($O(j)$ FLOPS). There is one implicit team barrier per column which becomes the dominant overhead at high thread counts.
 
 ### 2.3 MPI
 

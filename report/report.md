@@ -190,8 +190,6 @@ without contention on a shared memory bus.
 
 ![CUDA performance](../cuda/cuda_performance.png)
 
-GPU: NVIDIA L4 (CC 8.9, 58 SMs, CUDA 12.8).
-
 | N    | Best (s)  | GFLOP/s | Speedup vs serial |
 |------|-----------|---------|-------------------|
 | 512  | 0.008844  | 5.06    | 6.6×              |

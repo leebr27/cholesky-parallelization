@@ -33,11 +33,36 @@ fi
 
 echo "Using Spack setup: $SPACK_SETUP"
 . "$SPACK_SETUP"
-spack load intel-oneapi-vtune
+
+# `spack load` / `spack env activate` are broken on this account due to a
+# stale entry in ~/.spack/package_repos (UnknownNamespaceError: builtin).
+# Bypass spack entirely and locate the vtune binary directly inside the
+# spack install tree.
+SPACK_ROOT="$(dirname "$(dirname "$(dirname "$SPACK_SETUP")")")"
+# Prefer the newest installed vtune (sort -V puts e.g. 2025.8 after 2024.3).
+VTUNE_BIN="$(ls -d "$SPACK_ROOT"/opt/spack/*/intel-oneapi-vtune-*/vtune/latest/bin64 2>/dev/null \
+            | sort -V | tail -n 1)"
+
+if [ -z "$VTUNE_BIN" ] || [ ! -x "$VTUNE_BIN/vtune" ]; then
+    # Fallback: search anywhere under the spack root.
+    VTUNE_PATH="$(find "$SPACK_ROOT" -type f -name vtune -path '*/bin64/*' 2>/dev/null | head -n 1)"
+    if [ -n "$VTUNE_PATH" ]; then
+        VTUNE_BIN="$(dirname "$VTUNE_PATH")"
+    fi
+fi
+
+if [ -z "$VTUNE_BIN" ] || [ ! -x "$VTUNE_BIN/vtune" ]; then
+    echo "ERROR: could not locate vtune binary under $SPACK_ROOT" >&2
+    exit 1
+fi
+
+export PATH="$VTUNE_BIN:$PATH"
+echo "Using vtune from: $VTUNE_BIN"
+# Source vtune's own env script if present (sets up sampling drivers, etc.)
+[ -f "$VTUNE_BIN/../env/vars.sh" ] && . "$VTUNE_BIN/../env/vars.sh" 2>/dev/null || true
 
 if ! command -v vtune >/dev/null 2>&1; then
-    echo "ERROR: 'vtune' not found after spack env activate." >&2
-    echo "Hint: run 'spack find | grep vtune' and 'spack load intel-oneapi-vtune' manually to check." >&2
+    echo "ERROR: 'vtune' still not in PATH after manual load (looked in $VTUNE_BIN)" >&2
     exit 1
 fi
 

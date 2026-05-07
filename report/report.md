@@ -31,7 +31,7 @@ a textbook test case for Amdahl's law and for many important parallel paradigms 
 I implemented the same algorithm five times: serial C++, OpenMP, MPI,
 CUDA, and mpi4py. Each version was
 benchmarked on an AWS ParallelCluster. For profiling, I used Intel VTune to analyze the OpenMP implementation on CPU, and NVIDIA Nsight Systems to profile the CUDA implementation on GPU. All five produce
-residuals $\lVert A - LL^T \rVert_F$ in the $10^{-12}$–$10^{-10}$ range,
+residuals ||A - LLᵗ||_F in the 10⁻¹²–10⁻¹⁰ range,
 ensuring that the comparisons below are fair and directly comparable.
 
 ## 2. Methods

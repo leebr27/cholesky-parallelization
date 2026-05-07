@@ -1,7 +1,5 @@
 # Parallelizing Cholesky Factorization
 
-by Brian Lee
-
 ## 1. Introduction
 
 The Cholesky factorization is the workhorse of numerical linear algebra
@@ -115,7 +113,7 @@ GFLOP/s uses the conventional $N^3/3$ FLOP count.
 
 ### 3.1 Serial baseline
 
-![Serial performance](../serial/serial_performance.png)
+![Serial performance](serial/serial_performance.png)
 
 | N    | Best (s)  | GFLOP/s | Residual |
 |------|-----------|---------|----------|
@@ -131,7 +129,7 @@ the motivation for every parallel version that follows.
 
 ### 3.2 OpenMP — strong and weak scaling
 
-![OpenMP performance](../openmp/openmp_performance.png)
+![OpenMP performance](openmp/openmp_performance.png)
 
 **Strong scaling at N=1024:**
 
@@ -160,7 +158,7 @@ becomes the wall.
 
 ### 3.3 MPI — distributing the working set
 
-![MPI performance](../mpi/mpi_performance.png)
+![MPI performance](mpi/mpi_performance.png)
 
 **Strong scaling at N=1024:**
 
@@ -188,7 +186,7 @@ without contention on a shared memory bus.
 
 ### 3.4 CUDA — single-GPU dense linear algebra
 
-![CUDA performance](../cuda/cuda_performance.png)
+![CUDA performance](cuda/cuda_performance.png)
 
 | N    | Best (s)  | GFLOP/s | Speedup vs serial |
 |------|-----------|---------|-------------------|
@@ -212,7 +210,7 @@ column.
 
 ### 3.5 mpi4py — the cost of abstraction
 
-![mpi4py performance](../additional/mpi4py_performance.png)
+![mpi4py performance](additional/mpi4py_performance.png)
 
 | Ranks | mpi4py (s) | GFLOP/s | C++ MPI (s) | Overhead |
 |-------|------------|---------|-------------|----------|

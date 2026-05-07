@@ -233,7 +233,7 @@ overhead unchanged, so communication relatively dominates.
 I profiled the two implementations whose bottlenecks were most
 informative: OpenMP (Intel VTune) and CUDA (Nsight Systems).
 
-### 4.1 VTune on OpenMP (N=1024, 16 threads)
+### 4.1 VTune on OpenMP
 
 The Hotspots analysis revealed exactly what the strong-scaling curve
 predicted:
@@ -248,20 +248,15 @@ predicted:
 
 Setting aside the un-parallelized matrix generation (a real-world
 artifact of the benchmark, not the algorithm), the interesting line is
-the GOMP barrier: **0.65 s of the 0.67 s spin time was Imbalance / Serial
-Spinning**, with zero lock contention. Every column ends with 16 threads
+the GOMP barrier: 0.65 s of the 0.67 s spin time was Imbalance / Serial
+Spinning, with zero lock contention. Every column ends with 16 threads
 waiting at a barrier for the next sequential diagonal step. That's the
 Amdahl serial fraction made visible: the spin time is essentially the
-cost of *not* parallelizing the diagonal. It is also why 16-thread
-efficiency drops from 120% (at 8 threads) to 64% — once the parallel
+cost of not parallelizing the diagonal. It's also why 16-thread
+efficiency drops from 120% (at 8 threads) to 64%; once the parallel
 section is short enough, the fixed barrier cost dominates each column.
 
-VTune also reported zero false sharing, confirming that
-`schedule(static)` cleanly partitions disjoint row ranges. The
-optimization the profile suggests — a fused-diagonal or pipelined
-column scheme — would address the only meaningful overhead.
-
-### 4.2 Nsight Systems on CUDA (N=2048, A10G)
+### 4.2 Nsight Systems on CUDA
 
 Nsight tells a similarly clean story. **GPU side:**
 
@@ -282,7 +277,7 @@ matches the column-by-column loop exactly.
 | `cudaLaunchKernel` | 134.4 ms | 16,376 | 8.2 µs | 20.5% |
 | `cudaMalloc` | 125.7 ms | 1 | 125.7 ms | 19.2% |
 
-The smoking gun: `cudaMemcpy` consumes 60% of all host API time, even
+The primary performance bottleneck is identified in the `cudaMemcpy` function, which consumes 60% of all host API time even
 though the actual GPU-side transfer time for those copies is only 28 ms
 total. Every column issues a synchronous one-`double` D2H to read
 $L_{jj}$, which forces an implicit `cudaDeviceSynchronize` and stalls
@@ -290,8 +285,7 @@ the host until the previous `rank1_update_kernel` finishes. Multiplied
 by N=2048 columns, that 24 µs round-trip is the reason the GPU plateaus
 at 40 GFLOP/s instead of pushing further toward peak. A single device
 kernel that computes the diagonal in-place and passes $1/L_{jj}$
-directly to the next launch would eliminate this — and is exactly what
-production libraries do.
+directly to the next launch would eliminate this.
 
 The two profiles together capture the same lesson from opposite sides:
 the right-looking column-by-column formulation is fundamentally limited

@@ -68,3 +68,78 @@ For each column $j = 0, \dots, N-1$:
 $$L_{jj} = \sqrt{A_{jj} - \sum_{k<j} L_{jk}^2} \quad \text{(host)}$$
 $$L_{ij} \mathrel{/}= L_{jj}, \quad i > j \quad \texttt{(scale\_column\_kernel)}$$
 $$L_{ik} \mathrel{-}= L_{ij} \cdot L_{kj}, \quad i \ge k > j \quad \texttt{(rank1\_update\_kernel)}$$
+
+## Nsight Systems Profiling (`cholesky_cuda_nsys_108855.out`)
+
+NVIDIA Nsight Systems 2024.6.2 was run at N=2048 with 3 repeats on an NVIDIA
+A10G (sm_86, CUDA 12.8) via `submit_nsys.slurm`.
+
+### CUDA GPU kernel summary
+
+| Kernel | GPU Time | Instances | Avg (ns) | % of GPU Time |
+|---|---|---|---|---|
+| `rank1_update_kernel` | 254.0 ms | 8188 | 31,021 | **95.1%** |
+| `scale_column_kernel` | 13.2 ms | 8188 | 1,607 | 4.9% |
+
+8188 instances ≈ 2048 columns × 4 runs (1 warmup + 3 timed), consistent with
+the column-by-column loop.
+
+### CUDA memcpy summary (GPU-side transfer time)
+
+| Operation | GPU Time | Count | Avg (ns) |
+|---|---|---|---|
+| Device-to-Host | 13.86 ms | 8193 | 1,692 |
+| Host-to-Device | 13.85 ms | 8196 | 1,690 |
+
+The D2H count (8193) matches one scalar `double` read per column per run to
+retrieve `L(j,j)` for the host-side square root. The H2D count (8196) includes
+one large initial matrix copy (33.6 MB) plus per-column `inv_ljj` writes back.
+GPU-side transfer time is small (~28 ms total) — the real cost is on the host.
+
+### CUDA API summary (host-side overhead)
+
+| API Call | Host Time | Calls | Avg (ns) | % of API Time |
+|---|---|---|---|---|
+| `cudaMemcpy` | 392.4 ms | 16,389 | 23,945 | **59.8%** |
+| `cudaLaunchKernel` | 134.4 ms | 16,376 | 8,210 | 20.5% |
+| `cudaMalloc` | 125.7 ms | 1 | 125,728,165 | 19.2% |
+
+### Performance bottlenecks identified
+
+**1. Per-column synchronous `cudaMemcpy` is the dominant host bottleneck.**
+Each of the N=2048 columns issues a synchronous `cudaMemcpy` D2H to read
+`L(j,j)` from the device. Synchronous memcpy implicitly calls
+`cudaDeviceSynchronize`, stalling the host until the GPU finishes the previous
+column's `rank1_update_kernel` before the host can compute the diagonal and
+proceed. The Nsight data shows `cudaMemcpy` consuming 59.8% of total API
+time (392 ms) at an average of 23.9 µs per call — far larger than the actual
+1.7 µs GPU transfer time. This host round-trip is serialized N times,
+preventing any pipelining between columns and is the root cause of the
+column-count-driven overhead seen in the N=512 scaling results.
+
+**2. `rank1_update_kernel` correctly dominates GPU time at 95.1%.**
+The trailing-matrix rank-1 update does $O((N-j)^2)$ work per column and
+accounts for virtually all useful GPU computation. Its average duration grows
+from 1.2 µs (final column, tiny 2×2 update) to 132 µs (early columns, large
+trailing submatrix), spanning a 100× range — consistent with the $(N-j)^2$
+work scaling. This wide variance in kernel duration means early large kernels
+fully saturate the A10G's 80 SMs while later small kernels leave most of the
+GPU idle, partly explaining the gap between achieved (25 GFLOP/s) and
+theoretical peak.
+
+**3. `scale_column_kernel` overhead is negligible at 4.9%.**
+The 1D column-scaling kernel averages 1.6 µs and contributes 13 ms across all
+instances — small enough to ignore for optimization purposes.
+
+**4. `cudaLaunchKernel` host overhead is measurable but secondary.**
+Kernel launch overhead totals 134 ms (avg 8.2 µs × 16,376 launches = 2
+launches per column × N × repeats). This is about one-third of the memcpy
+overhead and confirms that the synchronization cost of the diagonal memcpy,
+not the launch overhead itself, is the primary limiter.
+
+**Summary:** the per-column host sync imposed by the synchronous diagonal
+`cudaMemcpy` serializes N=2048 GPU-CPU round-trips, each taking ~24 µs
+host-side. Eliminating this (e.g. by computing the diagonal on the GPU with a
+small device kernel and passing `inv_ljj` directly to the next kernel) would
+remove the dominant bottleneck and allow larger sustained throughput.
+

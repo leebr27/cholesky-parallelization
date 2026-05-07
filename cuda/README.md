@@ -36,17 +36,22 @@ OpenMP, and MPI results.
 
 | N    | Best time (s) | GFLOP/s | Speedup vs serial |
 |------|--------------|---------|-------------------|
-| 512  | 0.008844     | 5.059   | 0.35× (overhead)  |
+| 512  | 0.008844     | 5.059   | 6.6×              |
 | 1024 | 0.021121     | 16.946  | 36.8×             |
 | 2048 | 0.072146     | 39.688  | 173×              |
-| 3072 | 0.240840     | 40.125  | ~175×             |
+| 3072 | 0.240840     | 40.125  | — (no serial run) |
 
-GFLOP/s plateaus near 40 at N=2048–3072, indicating the 80 CUDA SMs are
-compute-saturated for the rank-1 update kernel. At N=512, kernel-launch
-overhead per column dominates and makes the GPU slower than the serial CPU
-— a known characteristic of column-by-column Cholesky on GPUs. At N=1024
-and beyond, the per-launch work grows as $(N-j)^2$, amortizing the launch
-cost and delivering 37–175× speedup over the serial baseline.
+Speedups are computed against same-N serial baselines from `serial/`
+(0.058234 s, 0.776923 s, 12.502958 s for N=512, 1024, 2048). Serial was
+not run at N=3072, so no speedup figure is reported there. GFLOP/s
+plateaus near 40 at N=2048–3072, indicating the SMs are compute-saturated
+for the rank-1 update kernel. At N=512, the GPU achieves only ~5 GFLOP/s
+— about one-eighth of its own asymptotic throughput — because per-column
+launch and memcpy overhead is comparable to the actual rank-1 update
+work; the 6.6× speedup over serial is real but well below what the same
+kernel sustains at larger N. By N=1024 and beyond, the per-launch work
+grows as $(N-j)^2$, amortizing the launch cost and delivering 37–173×
+speedup over the serial baseline.
 
 ## Performance Discussion
 

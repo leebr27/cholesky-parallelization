@@ -194,17 +194,28 @@ GPU: NVIDIA L4 (CC 8.9, 58 SMs, CUDA 12.8).
 
 | N    | Best (s)  | GFLOP/s | Speedup vs serial |
 |------|-----------|---------|-------------------|
-| 512  | 0.008844  | 5.06    | 0.35× (overhead!) |
+| 512  | 0.008844  | 5.06    | 6.6×              |
 | 1024 | 0.021121  | 16.95   | 36.8×             |
 | 2048 | 0.072146  | 39.69   | 173×              |
-| 3072 | 0.240840  | 40.13   | ~175×             |
+| 3072 | 0.240840  | 40.13   | — (no serial run) |
 
-At N=512 the GPU is *slower* than the serial CPU. With only 512
-columns, the per-column launch + memcpy overhead
-dominates the actual rank-1 update work. By N=2048 the per-column work
-has grown as $(N{-}j)^2$ and amortizes the fixed overhead; sustained
-throughput plateaus near 40 GFLOP/s, which is roughly 0.13% of the NVIDIA L4's theoretical peak. This performance gap is attributed to the naive column-by-column approach, which requires a synchronous kernel launch and a global barrier for every column. Notably, single-GPU N=2048 (0.072 s) is **2× faster than 16-rank MPI** (0.150 s), demonstrating that even a naive GPU
-beats a small MPI cluster on dense linear algebra at this scale.
+At N=512 the GPU achieves only ~5 GFLOP/s — about one-eighth of its
+own asymptotic throughput — because with only 512 columns the
+per-column launch + memcpy overhead is comparable to the actual
+rank-1 update work. The 6.6× speedup over serial is real but
+unimpressive for a GPU; the more telling comparison is against the
+40 GFLOP/s the same kernel sustains at larger N. By N=2048 the
+per-column work has grown as $(N{-}j)^2$ and amortizes the fixed
+overhead; sustained throughput plateaus near 40 GFLOP/s, which is
+roughly 0.13% of the NVIDIA L4's theoretical peak. This performance
+gap is attributed to the naive column-by-column approach, which
+requires a synchronous kernel launch and a global barrier for every
+column. (N=3072 was run on the GPU but not on the serial baseline,
+so a direct speedup figure is omitted; the sustained 40 GFLOP/s
+confirms the plateau.) Notably, single-GPU N=2048 (0.072 s) is
+**2× faster than 16-rank MPI** (0.150 s), demonstrating that even a
+naive GPU beats a small MPI cluster on dense linear algebra at this
+scale.
 
 ### 3.5 mpi4py — the cost of abstraction
 

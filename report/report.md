@@ -14,12 +14,10 @@ routine `DPOTRF` wraps it; here, I implement it from scratch so I can
 control (and parallelize) every line.
 
 The algorithm is the **right-looking column-by-column** formulation. For
+
 each column $j = 0, \dots, N{-}1$:
 
-$$
-L_{jj} = \sqrt{A_{jj} - \sum_{k<j} L_{jk}^2}, \qquad
-L_{ij} = \frac{1}{L_{jj}}\Big(A_{ij} - \sum_{k<j} L_{ik} L_{jk}\Big),\;\; i > j.
-$$
+$L_{jj} = \sqrt{A_{jj} - \sum_{k<j} L_{jk}^2}$, $L_{ij} = \frac{1}{L_{jj}}\Big(A_{ij} - \sum_{k<j} L_{ik} L_{jk}\Big),\;\; i > j.$
 
 The total work is $\tfrac{1}{3} N^3$ floating-point operations. Two
 features make Cholesky an interesting parallelization target. First, the

@@ -1,11 +1,9 @@
-#!/bin/bash
+#!/bin/bash -l
 #SBATCH --job-name=cholesky_openmp_vtune
 #SBATCH --output=cholesky_openmp_vtune_%j.out
 #SBATCH --partition=general
 #SBATCH --nodes=1
-#SBATCH --ntasks=1
-#SBATCH --cpus-per-task=16
-#SBATCH --mem=8G
+#SBATCH --exclusive
 #SBATCH --time=00:10:00
 
 # ---------------------------------------------------------------------------
@@ -14,19 +12,9 @@
 # diagonal update vs. the parallel sub-diagonal panel) on a 16-core node.
 # ---------------------------------------------------------------------------
 
-# Load Intel VTune. Try a few common module names so this works across
-# cluster configurations; fall back to whatever `vtune` is already in PATH.
-module load intel-oneapi-vtune 2>/dev/null \
-    || module load vtune       2>/dev/null \
-    || module load intel       2>/dev/null \
-    || true
-
-if ! command -v vtune >/dev/null 2>&1; then
-    echo "ERROR: 'vtune' not found in PATH after module load." >&2
-    echo "Available modules matching vtune/intel:" >&2
-    module avail 2>&1 | grep -iE 'vtune|oneapi|intel' >&2 || true
-    exit 1
-fi
+# Set up Spack environment (provides vtune, compilers, etc.)
+. ~/brl399/spack/share/spack/setup-env.sh
+spack env activate -p CS-2050-metal
 
 vtune --version
 
@@ -49,6 +37,7 @@ echo "### VTune: hotspots ###"
 rm -rf vtune_hotspots
 vtune -collect hotspots \
       -result-dir vtune_hotspots \
+      -knob enable-characterization-insights=false \
       -- ./cholesky_openmp $N $REPEATS
 
 vtune -report summary -result-dir vtune_hotspots
@@ -65,6 +54,7 @@ echo "### VTune: threading ###"
 rm -rf vtune_threading
 vtune -collect threading \
       -result-dir vtune_threading \
+      -knob enable-characterization-insights=false \
       -- ./cholesky_openmp $N $REPEATS
 
 vtune -report summary -result-dir vtune_threading

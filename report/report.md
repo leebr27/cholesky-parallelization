@@ -199,8 +199,8 @@ GPU: NVIDIA L4 (CC 8.9, 58 SMs, CUDA 12.8).
 | 2048 | 0.072146  | 39.69   | 173×              |
 | 3072 | 0.240840  | 40.13   | — (no serial run) |
 
-At N=512 the GPU achieves only ~5 GFLOP/s — about one-eighth of its
-own asymptotic throughput — because with only 512 columns the
+At N=512 the GPU achieves only ~5 GFLOP/s (about one-eighth of its
+own asymptotic throughput) because with only 512 columns the
 per-column launch + memcpy overhead is comparable to the actual
 rank-1 update work. The 6.6× speedup over serial is real but
 unimpressive for a GPU; the more telling comparison is against the
@@ -210,12 +210,7 @@ overhead; sustained throughput plateaus near 40 GFLOP/s, which is
 roughly 0.13% of the NVIDIA L4's theoretical peak. This performance
 gap is attributed to the naive column-by-column approach, which
 requires a synchronous kernel launch and a global barrier for every
-column. (N=3072 was run on the GPU but not on the serial baseline,
-so a direct speedup figure is omitted; the sustained 40 GFLOP/s
-confirms the plateau.) Notably, single-GPU N=2048 (0.072 s) is
-**2× faster than 16-rank MPI** (0.150 s), demonstrating that even a
-naive GPU beats a small MPI cluster on dense linear algebra at this
-scale.
+column. 
 
 ### 3.5 mpi4py — the cost of abstraction
 

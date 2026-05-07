@@ -92,12 +92,6 @@ $L$ entirely in device memory. Per column $j$, three steps execute:
 3. **`rank1_update_kernel`**: 2D grid, 16×16 blocks, applies the
    rank-1 update over the lower triangle of the trailing block.
 
-The code compiles with `nvcc -O3 -arch=sm_70` and PTX-JITs to whatever
-GPU is allocated (L4 for benchmarking, A10G for profiling). I
-deliberately kept the kernel naive — no blocking, no shared-memory
-tiling — to make the bottleneck (per-column host sync) easy to identify
-in Nsight Systems.
-
 ### 2.5 mpi4py (additional)
 
 For Part 5 I re-implemented the MPI version in Python with mpi4py

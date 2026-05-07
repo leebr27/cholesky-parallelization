@@ -64,9 +64,9 @@ optimal here because each row does the same amount of work
 ### 2.3 MPI
 
 The MPI version ([mpi/cholesky_mpi.cpp](mpi/cholesky_mpi.cpp)) uses a
-**1D column-cyclic** distribution: rank $r$ owns column $j$ iff
+1D column-cyclic distribution: rank $r$ owns column $j$ iff
 $j \bmod P = r$. Cyclic (rather than block) assignment keeps the load
-balanced as the trailing matrix shrinks — every rank always holds
+balanced as the trailing matrix shrinks; every rank always holds
 roughly $N/P$ columns of every width. For each column:
 
 1. The owner factors its column locally (sqrt + scale).
@@ -75,11 +75,10 @@ roughly $N/P$ columns of every width. For each column:
    only.
 
 Total bytes broadcast per rank is $\sum_j (N{-}j) \approx N^2/2$
-doubles, while compute per rank is $O(N^3/P)$ — the
+doubles, while compute per rank is $O(N^3/P)$; the
 compute-to-communication ratio grows like $O(N)$, so larger problems
-amortize MPI overhead better. The Slurm script requests **2 nodes × 8
-tasks/node = 16 ranks** and uses `srun --mpi=pmix_v5` against the
-`openmpi5/5.0.8amzn1` module.
+amortize MPI overhead better. The Slurm script requests 2 nodes × 8
+tasks/node = 16 ranks.
 
 ### 2.4 CUDA
 

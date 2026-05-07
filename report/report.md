@@ -38,7 +38,7 @@ ensuring that the comparisons below are fair and directly comparable.
 
 ### 2.1 Serial baseline
 
-[serial/cholesky_serial.cpp](serial/cholesky_serial.cpp) is a
+The serial version ([serial/cholesky_serial.cpp](serial/cholesky_serial.cpp)) is a
 straightforward column-major C++ implementation. The matrix is generated as $A = M^T M + N I$
 with `srand(42)` so that every implementation can be cross-checked
 against a deterministic reference. Timing uses

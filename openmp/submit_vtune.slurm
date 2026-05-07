@@ -104,7 +104,6 @@ echo "### VTune: threading ###"
 rm -rf vtune_threading
 vtune -collect threading \
       -result-dir vtune_threading \
-      -knob enable-characterization-insights=false \
       -- ./cholesky_openmp $N $REPEATS
 
 vtune -report summary -result-dir vtune_threading

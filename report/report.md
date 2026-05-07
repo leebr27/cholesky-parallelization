@@ -1,40 +1,38 @@
 # Parallelizing Cholesky Factorization
 
-**Brian Lee**
+**Brian L.**
 
 ## 1. Introduction
 
 The Cholesky factorization is the workhorse of numerical linear algebra
-for symmetric positive-definite (SPD) systems. Given an $N \times N$ SPD
-matrix $A$, it produces a lower-triangular $L$ with $A = L L^T$. Once $L$
-is known, solving $Ax = b$ reduces to two triangular solves — a
-foundational primitive for least-squares regression, Gaussian processes,
-Kalman filters, and the Newton step in convex optimization. The LAPACK
+for symmetric positive-definite (SPD) systems. A matrix is symmetric if it is equal to its own transpose ($A = A^T$), meaning its values are mirrored across the main diagonal, and it is positive-definite if for any non-zero vector $x$, the product $x^T A x$ is always strictly greater than zero. This guarantees that all its eigenvalues are positive and its "square root" can be calculated without involving imaginary numbers. Given an $N \times N$ SPD
+matrix $A$, Cholesky produces a lower-triangular $L$ with $A = L L^T$. Once $L$
+is known, solving $Ax = b$ reduces to two triangular solves; this is a
+foundational primitive for least-squares regression (trend prediction), Gaussian processes (AI models),
+Kalman filters (self-driving car sensors), and the Newton step in convex optimization (engineering design). The LAPACK
 routine `DPOTRF` wraps it; here, I implement it from scratch so I can
 control (and parallelize) every line.
 
-The algorithm is the **right-looking column-by-column** formulation. For
+The algorithm is the right-looking column-by-column formulation. For
 
 each column $j = 0, \dots, N{-}1$:
 
-$L_{jj} = \sqrt{A_{jj} - \sum_{k<j} L_{jk}^2}$, $L_{ij} = \frac{1}{L_{jj}}\Big(A_{ij} - \sum_{k<j} L_{ik} L_{jk}\Big),\;\; i > j.$
+$L_{jj} = \sqrt{A_{jj} - \sum_{k<j} L_{jk}^2}$, $L_{ij} = \frac{1}{L_{jj}}\Big(A_{ij} - \sum_{k<j} L_{ik} L_{jk}\Big);\ i > j.$
 
 The total work is $\tfrac{1}{3} N^3$ floating-point operations. Two
 features make Cholesky an interesting parallelization target. First, the
 *outer* column loop is sequential: column $j$ depends on the entire
-prefix $L_{:, 0:j}$. Second, the *inner* trailing-matrix update — a
-rank-1 outer product applied to the lower triangle of an
-$(N{-}j)\times(N{-}j)$ block — is embarrassingly parallel and dominates
+prefix $L_{:, 0:j}$. Second, the *inner* trailing-matrix update is a rank-1 outer product applied to the lower triangle of an
+$(N{-}j)\times(N{-}j)$ block, which is embarrassingly parallel and dominates
 the FLOP count. So Cholesky is essentially a long sequence of large
 data-parallel updates with a thin synchronization barrier between them:
-a textbook test case for Amdahl's law and for every parallel paradigm we
-covered in CS 2050.
+a textbook test case for Amdahl's law and for many important parallel paradigms in high-performance computing.
 
 I implemented the same algorithm five times: serial C++, OpenMP, MPI,
-CUDA, and (as the "additional" implementation) mpi4py. Each version was
-benchmarked on the class AWS ParallelCluster. For profiling, I used Intel VTune to analyze the OpenMP implementation on CPU, and NVIDIA Nsight Systems to profile the CUDA implementation on GPU. All five produce
+CUDA, and mpi4py. Each version was
+benchmarked on an AWS ParallelCluster. For profiling, I used Intel VTune to analyze the OpenMP implementation on CPU, and NVIDIA Nsight Systems to profile the CUDA implementation on GPU. All five produce
 residuals $\lVert A - LL^T \rVert_F$ in the $10^{-12}$–$10^{-10}$ range,
-so the comparisons below are apples-to-apples.
+ensuring that the comparisons below are fair and directly comparable.
 
 ## 2. Methods
 

@@ -1,0 +1,17 @@
+-r
+/shared/home/brl399/project-brl399/openmp/vtune_hotspots
+--stack-stitching
+--data-limit-mb=1000
+--disk-space-limit=0
+--mrte-type=java,python
+--stack-unwind-limit=8388608
+--itt-config=frame
+--itt-config=task,event,counter
+--stackwalk=offline
+--mrte-mode=auto
+--type=cpu:stack
+--interval=10
+--
+./cholesky_openmp
+1024
+3

@@ -177,7 +177,7 @@ becomes the wall.
 |-------|------|-----------|---------|-------------------|
 | 16    | 2048 | 0.149886  | 19.103  | **83.4×**         |
 
-The MPI numbers are the most striking of the project. At N=1024 with
+The MPI numbers are significant. At N=1024 with
 16 ranks the speedup is 21× against an ideal of 16×, and at N=2048 it
 is 83×: five times the rank count. Essentially, the
 serial run at N=2048 was thrashing LLC at 0.229 GFLOP/s, but with 16

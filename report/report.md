@@ -179,12 +179,10 @@ becomes the wall.
 
 The MPI numbers are the most striking of the project. At N=1024 with
 16 ranks the speedup is 21× against an ideal of 16×, and at N=2048 it
-is **83×** — five times the rank count. There is no magic here: the
+is 83×: five times the rank count. Essentially, the
 serial run at N=2048 was thrashing LLC at 0.229 GFLOP/s, but with 16
 distributed ranks each node holds only $\sim 1/16$ of the matrix and
-the entire working set fits comfortably in cache. We're not just
-parallelizing computation, we're partitioning a bandwidth-bound problem
-into bandwidth-friendly chunks. This is the same effect OpenMP captured
+the entire working set fits comfortably in cache. This approach doesn't simply parallelize computation; it partitions a bandwidth-bound problem into bandwidth-friendly chunks. This is the same effect OpenMP captured
 at low thread counts, but MPI scales it across two physical nodes
 without contention on a shared memory bus.
 

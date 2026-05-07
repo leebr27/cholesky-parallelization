@@ -71,7 +71,7 @@ roughly $N/P$ columns of every width. For each column:
 
 1. The owner factors its column locally (sqrt + scale).
 2. `MPI_Bcast` sends the $(N{-}j)$-length column to all ranks.
-3. Every rank applies the rank-1 trailing update to *its own* columns
+3. Every rank applies the rank-1 trailing update to its own columns
    only.
 
 Total bytes broadcast per rank is $\sum_j (N{-}j) \approx N^2/2$

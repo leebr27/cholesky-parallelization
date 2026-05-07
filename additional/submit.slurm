@@ -8,8 +8,7 @@
 #SBATCH --mem-per-cpu=1G
 #SBATCH --time=00:10:00
 
-# Source the class Spack environment (auto-activates CS-2050; provides
-# python@3.12, mpi4py, numpy, openmpi5).
+# Source the Spack environment.
 source /shared/spack/share/spack/setup-env.sh
 
 # Sanity check: show what we loaded.

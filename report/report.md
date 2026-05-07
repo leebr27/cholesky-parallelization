@@ -221,14 +221,12 @@ column.
 | 8     | 0.569766   | 0.628   | 0.046557    | 12.2×    |
 | 16    | 0.288484   | 1.241   | 0.036596    | 7.9×     |
 
-Same algorithm, same cluster, same MPI library — and Python is
-**8–15× slower**. The overhead is fixed-per-column: 1024 trips through
+Same algorithm, same cluster, same MPI library; yet Python is
+8–15× slower. The overhead is fixed-per-column: 1024 trips through
 the Python interpreter for the outer loop, plus 1024 `comm.Bcast`
-binding calls. The 4-rank case is *slower* than 2-rank because more
+binding calls. The 4-rank case is slower than 2-rank because more
 ranks shrink the per-rank NumPy work but leave the Python+Bcast
-overhead unchanged, so communication relatively dominates. Yet at 115
-lines vs. ~215 for C++ MPI, mpi4py is a defensible choice when
-correctness-per-developer-hour matters more than throughput.
+overhead unchanged, so communication relatively dominates. 
 
 ## 4. Profiling
 

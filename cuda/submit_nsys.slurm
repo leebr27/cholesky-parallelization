@@ -44,7 +44,9 @@ nvcc --version
 nsys --version
 
 # Compile with line-info so the report can attribute samples to source lines.
-nvcc -O3 -lineinfo -arch=sm_70 -o cholesky_cuda cholesky_cuda.cu -lm
+# A10G is Ampere sm_86; sm_70 is dropped for offline compilation in CUDA 12.8.
+nvcc -O3 -lineinfo -arch=sm_86 -Wno-deprecated-gpu-targets \
+     -o cholesky_cuda cholesky_cuda.cu -lm
 
 # Problem size large enough to expose the dominant rank-1 update cost
 # without exceeding the 10-minute job window.

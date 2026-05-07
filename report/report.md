@@ -200,16 +200,10 @@ GPU: NVIDIA L4 (CC 8.9, 58 SMs, CUDA 12.8).
 | 3072 | 0.240840  | 40.13   | ~175×             |
 
 At N=512 the GPU is *slower* than the serial CPU. With only 512
-columns, the per-column launch + memcpy overhead (~25 µs each, see §4)
+columns, the per-column launch + memcpy overhead
 dominates the actual rank-1 update work. By N=2048 the per-column work
-has grown as $(N{-}j)^2$ and amortizes the fixed overhead — sustained
-throughput plateaus near 40 GFLOP/s, which is roughly 0.13% of the L4's
-FP64 peak. That gap is honest: a naive column-by-column kernel cannot
-saturate a modern GPU because each column is one synchronous launch
-with a global barrier behind it. Production libraries (cuSOLVER) hit
-peak with blocked algorithms that batch multiple columns into a single
-DSYRK/DGEMM call. Notably, single-GPU N=2048 (0.072 s) is **2× faster
-than 16-rank MPI** (0.150 s), demonstrating that even a naive GPU
+has grown as $(N{-}j)^2$ and amortizes the fixed overhead; sustained
+throughput plateaus near 40 GFLOP/s, which is roughly 0.13% of the NVIDIA L4's theoretical peak. This performance gap is attributed to the naive column-by-column approach, which requires a synchronous kernel launch and a global barrier for every column. Notably, single-GPU N=2048 (0.072 s) is **2× faster than 16-rank MPI** (0.150 s), demonstrating that even a naive GPU
 beats a small MPI cluster on dense linear algebra at this scale.
 
 ### 3.5 mpi4py — the cost of abstraction

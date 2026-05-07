@@ -67,3 +67,58 @@ $$L_{ij} = \frac{1}{L_{jj}} \Big(A_{ij} - \sum_{k<j} L_{ik} L_{jk}\Big), \quad i
 The diagonal step is inherently sequential (each column depends on all
 previous columns), limiting parallel efficiency for large thread counts on
 small matrices — a known characteristic of the column-by-column formulation.
+
+## VTune Profiling (`cholesky_openmp_vtune_108828.out`)
+
+Intel VTune Profiler 2025.8.0 hotspots analysis was run at N=1024 with 16
+threads (`submit_vtune.slurm`). The profiler sampled the entire process,
+including matrix generation and correctness verification.
+
+### Hotspots summary
+
+| Function | CPU Time | % of CPU Time | Type |
+|---|---|---|---|
+| `generate_spd_matrix` | 9.790 s | 70.1% | Effective (serial) |
+| `cholesky_openmp._omp_fn.0` | 2.790 s | 20.0% | Effective (parallel) |
+| `verify` | 0.670 s | 4.8% | Effective (serial) |
+| `gomp_team_barrier_wait_end` | 0.670 s | 4.8% | **Spin / Imbalance** |
+| Thread creation + other | 0.040 s | 0.2% | Overhead |
+
+- **Elapsed wall time**: 10.708 s (dominated by the unparallelized
+  `generate_spd_matrix` call, which is O(N³) and serial).
+- **Factorization itself**: 0.055 s at 16 threads (6.6 GFLOP/s) — consistent
+  with the strong-scaling results in `submit.slurm`.
+
+### Performance trends explained by VTune
+
+**1. Serial matrix generation dominates profiled CPU time.**
+`generate_spd_matrix` accounts for 70% of aggregate CPU time. It constructs
+the SPD matrix as $A = M^T M + NI$ using a triply-nested serial loop, which
+is O(N³). Because this step is not parallelized, it becomes the dominant cost
+under profiling. In the scaling experiments this function's time is excluded
+(only factorization runtimes are measured), so it does not affect the reported
+speedups — but it illustrates that any real-world application would need to
+parallelize data generation as well.
+
+**2. Barrier spin time directly quantifies the Amdahl bottleneck.**
+`gomp_team_barrier_wait_end` spent 0.650 s in *Imbalance or Serial Spinning*
+(out of 0.670 s total spin time), with zero lock contention. This occurs
+because the column-by-column factorization requires a team barrier after each
+of the N=1024 columns: once the sequential diagonal element $L_{jj}$ is
+computed, all 16 threads synchronize before proceeding to the next column.
+Threads that finish their share of the parallel row update early must spin-wait
+at the barrier. This is precisely the serial fraction that Amdahl's law
+predicts will cap speedup — explaining why efficiency drops from ~120% at 8
+threads to 64% at 16 threads in the strong-scaling results.
+
+**3. Thread creation overhead is negligible.**
+Creation overhead totals 0.020 s (0.1% of CPU time), confirming that OpenMP's
+fork/join model at each column does not meaningfully contribute to the observed
+slowdown. The bottleneck is synchronization latency (barrier imbalance), not
+thread launch cost.
+
+**4. No lock contention or false sharing.**
+Lock Contention and Atomics are both 0 s, confirming the `schedule(static)`
+partition assigns independent row ranges to each thread with no overlap and no
+shared writes.
+

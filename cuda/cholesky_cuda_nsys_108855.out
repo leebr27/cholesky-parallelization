@@ -1,0 +1,182 @@
+ERROR: Unable to locate a modulefile for 'cuda'
+Thu May  7 00:31:26 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 570.172.08             Driver Version: 570.172.08     CUDA Version: 12.8     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA A10G                    On  |   00000000:00:1B.0 Off |                    0 |
+|  0%   27C    P8             15W /  300W |       0MiB /  23028MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+|   1  NVIDIA A10G                    On  |   00000000:00:1C.0 Off |                    0 |
+|  0%   27C    P8             15W /  300W |       0MiB /  23028MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+|   2  NVIDIA A10G                    On  |   00000000:00:1D.0 Off |                    0 |
+|  0%   27C    P8             15W /  300W |       0MiB /  23028MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+|   3  NVIDIA A10G                    On  |   00000000:00:1E.0 Off |                    0 |
+|  0%   27C    P8             15W /  300W |       0MiB /  23028MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2025 NVIDIA Corporation
+Built on Fri_Feb_21_20:23:50_PST_2025
+Cuda compilation tools, release 12.8, V12.8.93
+Build cuda_12.8.r12.8/compiler.35583870_0
+NVIDIA Nsight Systems version 2024.6.2.225-246235244400v0
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+nvcc error   : 'gcc' died due to signal 4 (Illegal Instruction)
+nvcc error   : 'gcc' core dumped
+nvcc fatal   : Host compiler targets unsupported OS.
+### Nsight Systems: profile (N=2048, repeats=3) ###
+CUDA Cholesky factorization: N = 2048, repeats = 3
+  GPU: NVIDIA A10G (CC 8.6, 80 SMs)
+  run 1: 0.112902 s
+  run 2: 0.113215 s
+  run 3: 0.112583 s
+  Best time:  0.112583 s
+  Avg time:   0.112900 s
+  GFLOP/s:    25.433
+  Residual:   8.40e-10
+Collecting data...
+Generating '/tmp/nsys-report-3a24.qdstrm'
+[1/8] [0%                          ] nsys_cholesky_cuda.nsys-rep[1/8] [0%                          ] nsys_cholesky_cuda.nsys-rep[1/8] [5%                          ] nsys_cholesky_cuda.nsys-rep[1/8] [======33%                   ] nsys_cholesky_cuda.nsys-rep[1/8] [======34%                   ] nsys_cholesky_cuda.nsys-rep[1/8] [======35%                   ] nsys_cholesky_cuda.nsys-rep[1/8] [=======36%                  ] nsys_cholesky_cuda.nsys-rep[1/8] [=======37%                  ] nsys_cholesky_cuda.nsys-rep[1/8] [=======39%                  ] nsys_cholesky_cuda.nsys-rep[1/8] [========40%                 ] nsys_cholesky_cuda.nsys-rep[1/8] [========41%                 ] nsys_cholesky_cuda.nsys-rep[1/8] [=========43%                ] nsys_cholesky_cuda.nsys-rep[1/8] [=========44%                ] nsys_cholesky_cuda.nsys-rep[1/8] [=========46%                ] nsys_cholesky_cuda.nsys-rep[1/8] [==========47%               ] nsys_cholesky_cuda.nsys-rep[1/8] [==========48%               ] nsys_cholesky_cuda.nsys-rep[1/8] [===========50%              ] nsys_cholesky_cuda.nsys-rep[1/8] [===========51%              ] nsys_cholesky_cuda.nsys-rep[1/8] [===========52%              ] nsys_cholesky_cuda.nsys-rep[1/8] [===========53%              ] nsys_cholesky_cuda.nsys-rep[1/8] [============54%             ] nsys_cholesky_cuda.nsys-rep[1/8] [============55%             ] nsys_cholesky_cuda.nsys-rep[1/8] [============57%             ] nsys_cholesky_cuda.nsys-rep[1/8] [=============58%            ] nsys_cholesky_cuda.nsys-rep[1/8] [=============59%            ] nsys_cholesky_cuda.nsys-rep[1/8] [=============60%            ] nsys_cholesky_cuda.nsys-rep[1/8] [==============61%           ] nsys_cholesky_cuda.nsys-rep[1/8] [==============62%           ] nsys_cholesky_cuda.nsys-rep[1/8] [==============63%           ] nsys_cholesky_cuda.nsys-rep[1/8] [==============64%           ] nsys_cholesky_cuda.nsys-rep[1/8] [===============65%          ] nsys_cholesky_cuda.nsys-rep[1/8] [=================72%        ] nsys_cholesky_cuda.nsys-rep[1/8] [==================78%       ] nsys_cholesky_cuda.nsys-rep[1/8] [====================85%     ] nsys_cholesky_cuda.nsys-rep[1/8] [=====================88%    ] nsys_cholesky_cuda.nsys-rep[1/8] [========================100%] nsys_cholesky_cuda.nsys-rep[1/8] [========================100%] nsys_cholesky_cuda.nsys-rep
+[2/8] [0%                          ] nsys_cholesky_cuda.sqlite[2/8] [1%                          ] nsys_cholesky_cuda.sqlite[2/8] [2%                          ] nsys_cholesky_cuda.sqlite[2/8] [3%                          ] nsys_cholesky_cuda.sqlite[2/8] [4%                          ] nsys_cholesky_cuda.sqlite[2/8] [5%                          ] nsys_cholesky_cuda.sqlite[2/8] [6%                          ] nsys_cholesky_cuda.sqlite[2/8] [7%                          ] nsys_cholesky_cuda.sqlite[2/8] [8%                          ] nsys_cholesky_cuda.sqlite[2/8] [9%                          ] nsys_cholesky_cuda.sqlite[2/8] [10%                         ] nsys_cholesky_cuda.sqlite[2/8] [11%                         ] nsys_cholesky_cuda.sqlite[2/8] [12%                         ] nsys_cholesky_cuda.sqlite[2/8] [13%                         ] nsys_cholesky_cuda.sqlite[2/8] [14%                         ] nsys_cholesky_cuda.sqlite[2/8] [=15%                        ] nsys_cholesky_cuda.sqlite[2/8] [=16%                        ] nsys_cholesky_cuda.sqlite[2/8] [=17%                        ] nsys_cholesky_cuda.sqlite[2/8] [==18%                       ] nsys_cholesky_cuda.sqlite[2/8] [==19%                       ] nsys_cholesky_cuda.sqlite[2/8] [==20%                       ] nsys_cholesky_cuda.sqlite[2/8] [==21%                       ] nsys_cholesky_cuda.sqlite[2/8] [===22%                      ] nsys_cholesky_cuda.sqlite[2/8] [===23%                      ] nsys_cholesky_cuda.sqlite[2/8] [===24%                      ] nsys_cholesky_cuda.sqlite[2/8] [====25%                     ] nsys_cholesky_cuda.sqlite[2/8] [====26%                     ] nsys_cholesky_cuda.sqlite[2/8] [====27%                     ] nsys_cholesky_cuda.sqlite[2/8] [====28%                     ] nsys_cholesky_cuda.sqlite[2/8] [=====29%                    ] nsys_cholesky_cuda.sqlite[2/8] [=====30%                    ] nsys_cholesky_cuda.sqlite[2/8] [=====31%                    ] nsys_cholesky_cuda.sqlite[2/8] [=====32%                    ] nsys_cholesky_cuda.sqlite[2/8] [======33%                   ] nsys_cholesky_cuda.sqlite[2/8] [======34%                   ] nsys_cholesky_cuda.sqlite[2/8] [======35%                   ] nsys_cholesky_cuda.sqlite[2/8] [=======36%                  ] nsys_cholesky_cuda.sqlite[2/8] [=======37%                  ] nsys_cholesky_cuda.sqlite[2/8] [=======38%                  ] nsys_cholesky_cuda.sqlite[2/8] [=======39%                  ] nsys_cholesky_cuda.sqlite[2/8] [========40%                 ] nsys_cholesky_cuda.sqlite[2/8] [========41%                 ] nsys_cholesky_cuda.sqlite[2/8] [========42%                 ] nsys_cholesky_cuda.sqlite[2/8] [=========43%                ] nsys_cholesky_cuda.sqlite[2/8] [=========44%                ] nsys_cholesky_cuda.sqlite[2/8] [=========45%                ] nsys_cholesky_cuda.sqlite[2/8] [=========46%                ] nsys_cholesky_cuda.sqlite[2/8] [==========47%               ] nsys_cholesky_cuda.sqlite[2/8] [==========48%               ] nsys_cholesky_cuda.sqlite[2/8] [==========49%               ] nsys_cholesky_cuda.sqlite[2/8] [===========50%              ] nsys_cholesky_cuda.sqlite[2/8] [===========51%              ] nsys_cholesky_cuda.sqlite[2/8] [===========52%              ] nsys_cholesky_cuda.sqlite[2/8] [===========53%              ] nsys_cholesky_cuda.sqlite[2/8] [============54%             ] nsys_cholesky_cuda.sqlite[2/8] [============55%             ] nsys_cholesky_cuda.sqlite[2/8] [============56%             ] nsys_cholesky_cuda.sqlite[2/8] [============57%             ] nsys_cholesky_cuda.sqlite[2/8] [=============58%            ] nsys_cholesky_cuda.sqlite[2/8] [=============59%            ] nsys_cholesky_cuda.sqlite[2/8] [=============60%            ] nsys_cholesky_cuda.sqlite[2/8] [==============61%           ] nsys_cholesky_cuda.sqlite[2/8] [==============62%           ] nsys_cholesky_cuda.sqlite[2/8] [==============63%           ] nsys_cholesky_cuda.sqlite[2/8] [==============64%           ] nsys_cholesky_cuda.sqlite[2/8] [===============65%          ] nsys_cholesky_cuda.sqlite[2/8] [===============66%          ] nsys_cholesky_cuda.sqlite[2/8] [===============67%          ] nsys_cholesky_cuda.sqlite[2/8] [================68%         ] nsys_cholesky_cuda.sqlite[2/8] [================69%         ] nsys_cholesky_cuda.sqlite[2/8] [================70%         ] nsys_cholesky_cuda.sqlite[2/8] [================71%         ] nsys_cholesky_cuda.sqlite[2/8] [=================72%        ] nsys_cholesky_cuda.sqlite[2/8] [=================73%        ] nsys_cholesky_cuda.sqlite[2/8] [=================74%        ] nsys_cholesky_cuda.sqlite[2/8] [==================75%       ] nsys_cholesky_cuda.sqlite[2/8] [==================76%       ] nsys_cholesky_cuda.sqlite[2/8] [==================77%       ] nsys_cholesky_cuda.sqlite[2/8] [==================78%       ] nsys_cholesky_cuda.sqlite[2/8] [===================79%      ] nsys_cholesky_cuda.sqlite[2/8] [===================80%      ] nsys_cholesky_cuda.sqlite[2/8] [===================81%      ] nsys_cholesky_cuda.sqlite[2/8] [===================82%      ] nsys_cholesky_cuda.sqlite[2/8] [====================83%     ] nsys_cholesky_cuda.sqlite[2/8] [====================84%     ] nsys_cholesky_cuda.sqlite[2/8] [====================85%     ] nsys_cholesky_cuda.sqlite[2/8] [=====================86%    ] nsys_cholesky_cuda.sqlite[2/8] [=====================87%    ] nsys_cholesky_cuda.sqlite[2/8] [=====================88%    ] nsys_cholesky_cuda.sqlite[2/8] [=====================89%    ] nsys_cholesky_cuda.sqlite[2/8] [======================90%   ] nsys_cholesky_cuda.sqlite[2/8] [======================91%   ] nsys_cholesky_cuda.sqlite[2/8] [======================92%   ] nsys_cholesky_cuda.sqlite[2/8] [=======================93%  ] nsys_cholesky_cuda.sqlite[2/8] [=======================94%  ] nsys_cholesky_cuda.sqlite[2/8] [=======================95%  ] nsys_cholesky_cuda.sqlite[2/8] [=======================96%  ] nsys_cholesky_cuda.sqlite[2/8] [========================97% ] nsys_cholesky_cuda.sqlite[2/8] [========================98% ] nsys_cholesky_cuda.sqlite[2/8] [========================99% ] nsys_cholesky_cuda.sqlite[2/8] [========================100%] nsys_cholesky_cuda.sqlite[2/8] [========================100%] nsys_cholesky_cuda.sqlite
+SKIPPED: /shared/home/brl399/project-brl399/cuda/nsys_cholesky_cuda.sqlite does not contain NV Tools Extension (NVTX) data.
+[3/8] Executing 'nvtx_sum' stats report
+[4/8] Executing 'osrt_sum' stats report
+
+ Time (%)  Total Time (ns)  Num Calls   Avg (ns)    Med (ns)   Min (ns)  Max (ns)   StdDev (ns)           Name         
+ --------  ---------------  ---------  ----------  ----------  --------  ---------  -----------  ----------------------
+     99.8     116099761942      10101  11493887.9  10101352.0      1220  339955571   11450170.2  poll                  
+      0.2        199306467        787    253248.4     22730.0      1000   19132810     950561.5  ioctl                 
+      0.0         37591411         48    783154.4      6295.0      2141   20338466    3774356.6  fopen                 
+      0.0         17968693          5   3593738.6      2200.0      1080   12918583    5651713.0  fcntl                 
+      0.0          9225591          4   2306397.8   2285225.0      9310    4645831    2649678.4  fread                 
+      0.0          3340470         41     81474.9     11640.0      1440    2341792     374544.0  fclose                
+      0.0          2987634         37     80746.9     12200.0      6080    1979774     323947.0  mmap64                
+      0.0           539321          9     59924.6     59221.0     43421      86112      13501.2  sem_timedwait         
+      0.0           458550         61      7517.2      6500.0      3690      20811       3069.0  open64                
+      0.0           246056          2    123028.0    123028.0    104273     141783      26523.6  pthread_create        
+      0.0           232104         14     16578.9      6475.0      2530     112292      28174.0  mmap                  
+      0.0           195865          1    195865.0    195865.0    195865     195865          0.0  pthread_cond_wait     
+      0.0            96693         10      9669.3      9625.0      7681      12600       1592.9  write                 
+      0.0            87262          1     87262.0     87262.0     87262      87262          0.0  fgets                 
+      0.0            73122          6     12187.0      9670.0      7961      20401       5119.2  munmap                
+      0.0            38352          6      6392.0      6581.0      3520       9080       1844.3  open                  
+      0.0            21770          3      7256.7      7990.0      4060       9720       2900.4  pipe2                 
+      0.0            21210          2     10605.0     10605.0      1760      19450      12508.7  pthread_cond_broadcast
+      0.0            18511          2      9255.5      9255.5      7280      11231       2793.8  socket                
+      0.0            14360          7      2051.4      1670.0      1060       3640        950.2  read                  
+      0.0            13230          1     13230.0     13230.0     13230      13230          0.0  connect               
+      0.0             3760          2      1880.0      1880.0      1300       2460        820.2  fwrite                
+      0.0             2120          1      2120.0      2120.0      2120       2120          0.0  bind                  
+
+[5/8] Executing 'cuda_api_sum' stats report
+
+ Time (%)  Total Time (ns)  Num Calls   Avg (ns)     Med (ns)    Min (ns)   Max (ns)   StdDev (ns)                Name               
+ --------  ---------------  ---------  -----------  -----------  ---------  ---------  -----------  ---------------------------------
+     59.8        392427437      16389      23944.6      10830.0       3210    3293062      56366.4  cudaMemcpy                       
+     20.5        134446273      16376       8210.0       3790.0       3300   69780090     545260.2  cudaLaunchKernel                 
+     19.2        125728165          1  125728165.0  125728165.0  125728165  125728165          0.0  cudaMalloc                       
+      0.5          3291972          1    3291972.0    3291972.0    3291972    3291972          0.0  cudaGetDeviceProperties_v2_v12000
+      0.0           321127          1     321127.0     321127.0     321127     321127          0.0  cudaFree                         
+      0.0            24340          4       6085.0       6065.0       5580       6630        445.3  cudaDeviceSynchronize            
+      0.0             1120          1       1120.0       1120.0       1120       1120          0.0  cuModuleGetLoadingMode           
+
+[6/8] Executing 'cuda_gpu_kern_sum' stats report
+
+ Time (%)  Total Time (ns)  Instances  Avg (ns)  Med (ns)  Min (ns)  Max (ns)  StdDev (ns)                       Name                      
+ --------  ---------------  ---------  --------  --------  --------  --------  -----------  -----------------------------------------------
+     95.1        254002676       8188   31021.3   14112.0      1248    131968      32034.3  rank1_update_kernel(double *, int, int)        
+      4.9         13158485       8188    1607.0    1376.0      1184      2240        312.5  scale_column_kernel(double *, int, int, double)
+
+[7/8] Executing 'cuda_gpu_mem_time_sum' stats report
+
+ Time (%)  Total Time (ns)  Count  Avg (ns)  Med (ns)  Min (ns)  Max (ns)  StdDev (ns)           Operation          
+ --------  ---------------  -----  --------  --------  --------  --------  -----------  ----------------------------
+     50.0         13859517   8193    1691.6    1248.0       736   3171949      35029.0  [CUDA memcpy Device-to-Host]
+     50.0         13848782   8196    1689.7     416.0       384   2688970      57463.2  [CUDA memcpy Host-to-Device]
+
+[8/8] Executing 'cuda_gpu_mem_size_sum' stats report
+
+ Total (MB)  Count  Avg (MB)  Med (MB)  Min (MB)  Max (MB)  StdDev (MB)           Operation          
+ ----------  -----  --------  --------  --------  --------  -----------  ----------------------------
+    134.283   8196     0.016     0.000     0.000    33.554        0.741  [CUDA memcpy Host-to-Device]
+     33.620   8193     0.004     0.000     0.000    33.554        0.371  [CUDA memcpy Device-to-Host]
+
+Generated:
+    /shared/home/brl399/project-brl399/cuda/nsys_cholesky_cuda.nsys-rep
+    /shared/home/brl399/project-brl399/cuda/nsys_cholesky_cuda.sqlite
+
+### Top CUDA kernels by total time ###
+
+NOTICE: Existing SQLite export found: nsys_cholesky_cuda.sqlite
+        It is assumed file was previously exported from: nsys_cholesky_cuda.nsys-rep
+        Consider using --force-export=true if needed.
+
+Processing [nsys_cholesky_cuda.sqlite] with [/usr/local/cuda-12.8/nsight-systems-2024.6.2/host-linux-x64/reports/cuda_gpu_kern_sum.py]... 
+
+ ** CUDA GPU Kernel Summary (cuda_gpu_kern_sum):
+
++----------+-----------------+-----------+----------+----------+----------+----------+-------------+-------------------------------------------------+
+| Time (%) | Total Time (ns) | Instances | Avg (ns) | Med (ns) | Min (ns) | Max (ns) | StdDev (ns) |                      Name                       |
++----------+-----------------+-----------+----------+----------+----------+----------+-------------+-------------------------------------------------+
+|     95.1 |       254002676 |      8188 |  31021.3 |  14112.0 |     1248 |   131968 |     32034.3 | rank1_update_kernel(double *, int, int)         |
+|      4.9 |        13158485 |      8188 |   1607.0 |   1376.0 |     1184 |     2240 |       312.5 | scale_column_kernel(double *, int, int, double) |
++----------+-----------------+-----------+----------+----------+----------+----------+-------------+-------------------------------------------------+
+
+
+### CUDA memcpy summary ###
+
+NOTICE: Existing SQLite export found: nsys_cholesky_cuda.sqlite
+        It is assumed file was previously exported from: nsys_cholesky_cuda.nsys-rep
+        Consider using --force-export=true if needed.
+
+Processing [nsys_cholesky_cuda.sqlite] with [/usr/local/cuda-12.8/nsight-systems-2024.6.2/host-linux-x64/reports/cuda_gpu_mem_time_sum.py]... 
+
+ ** CUDA GPU MemOps Summary (by Time) (cuda_gpu_mem_time_sum):
+
++----------+-----------------+-------+----------+----------+----------+----------+-------------+------------------------------+
+| Time (%) | Total Time (ns) | Count | Avg (ns) | Med (ns) | Min (ns) | Max (ns) | StdDev (ns) |          Operation           |
++----------+-----------------+-------+----------+----------+----------+----------+-------------+------------------------------+
+|     50.0 |        13859517 |  8193 |   1691.6 |   1248.0 |      736 |  3171949 |     35029.0 | [CUDA memcpy Device-to-Host] |
+|     50.0 |        13848782 |  8196 |   1689.7 |    416.0 |      384 |  2688970 |     57463.2 | [CUDA memcpy Host-to-Device] |
++----------+-----------------+-------+----------+----------+----------+----------+-------------+------------------------------+
+
+
+### CUDA API call summary (host overhead) ###
+
+NOTICE: Existing SQLite export found: nsys_cholesky_cuda.sqlite
+        It is assumed file was previously exported from: nsys_cholesky_cuda.nsys-rep
+        Consider using --force-export=true if needed.
+
+Processing [nsys_cholesky_cuda.sqlite] with [/usr/local/cuda-12.8/nsight-systems-2024.6.2/host-linux-x64/reports/cuda_api_sum.py]... 
+
+ ** CUDA API Summary (cuda_api_sum):
+
++----------+-----------------+-----------+-------------+-------------+-----------+-----------+-------------+-----------------------------------+
+| Time (%) | Total Time (ns) | Num Calls |  Avg (ns)   |  Med (ns)   | Min (ns)  | Max (ns)  | StdDev (ns) |               Name                |
++----------+-----------------+-----------+-------------+-------------+-----------+-----------+-------------+-----------------------------------+
+|     59.8 |       392427437 |     16389 |     23944.6 |     10830.0 |      3210 |   3293062 |     56366.4 | cudaMemcpy                        |
+|     20.5 |       134446273 |     16376 |      8210.0 |      3790.0 |      3300 |  69780090 |    545260.2 | cudaLaunchKernel                  |
+|     19.2 |       125728165 |         1 | 125728165.0 | 125728165.0 | 125728165 | 125728165 |         0.0 | cudaMalloc                        |
+|      0.5 |         3291972 |         1 |   3291972.0 |   3291972.0 |   3291972 |   3291972 |         0.0 | cudaGetDeviceProperties_v2_v12000 |
+|      0.0 |          321127 |         1 |    321127.0 |    321127.0 |    321127 |    321127 |         0.0 | cudaFree                          |
+|      0.0 |           24340 |         4 |      6085.0 |      6065.0 |      5580 |      6630 |       445.3 | cudaDeviceSynchronize             |
+|      0.0 |            1120 |         1 |      1120.0 |      1120.0 |      1120 |      1120 |         0.0 | cuModuleGetLoadingMode            |
++----------+-----------------+-----------+-------------+-------------+-----------+-----------+-------------+-----------------------------------+
+

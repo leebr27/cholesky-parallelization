@@ -1,6 +1,6 @@
 # Parallelizing Cholesky Factorization
 
-**Brian L.**
+**Brian Lee**
 
 ## 1. Introduction
 

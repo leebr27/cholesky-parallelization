@@ -94,9 +94,9 @@ $L$ entirely in device memory. Per column $j$, three steps execute:
 
 ### 2.5 mpi4py (additional)
 
-For Part 5 I re-implemented the MPI version in Python with mpi4py
+Re-implemented the MPI version in Python with mpi4py
 ([additional/cholesky_mpi4py.py](additional/cholesky_mpi4py.py)), using
-the *same* 1D column-cyclic right-looking algorithm. The trailing
+the same 1D column-cyclic right-looking algorithm. The trailing
 update is a single vectorised NumPy slice:
 
 ```python
@@ -106,9 +106,7 @@ L_loc[k:, lk] -= buf[k-j:] * Lkj
 so the actual arithmetic runs in BLAS, but the column loop driver and
 each `comm.Bcast` go through the Python interpreter. This gives a clean
 measurement of "Python overhead per column" against the C++ MPI
-baseline. The Slurm script sources the class Spack environment
-(Python 3.12, mpi4py 4.1.1, NumPy 2.3.5, OpenMPI 5) so it mirrors the
-C++ MPI launch exactly.
+baseline. 
 
 ## 3. Results
 

@@ -124,7 +124,7 @@ GFLOP/s uses the conventional $N^3/3$ FLOP count.
 | 1024 | 0.776923  | 0.461   | 1.48e-10 |
 | 2048 | 12.502958 | 0.229   | 8.40e-10 |
 
-GFLOP/s *decreases* with $N$. This is the cache-pressure signature: at
+GFLOP/s decreases with $N$. This is the cache-pressure signature: at
 N=256 the working set fits in L2; by N=2048 every column update streams
 ~32 MB through LLC, and the loop becomes memory-bound. This decay is
 the motivation for every parallel version that follows.

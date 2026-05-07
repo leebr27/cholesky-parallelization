@@ -33,7 +33,6 @@ fi
 
 echo "Using Spack setup: $SPACK_SETUP"
 . "$SPACK_SETUP"
-spack env activate -p CS-2050-metal
 spack load intel-oneapi-vtune
 
 if ! command -v vtune >/dev/null 2>&1; then

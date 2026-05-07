@@ -294,21 +294,18 @@ synchronization mechanism is a GOMP barrier or a `cudaMemcpy`.
 
 ## 5. Conclusion
 
-Five implementations of the same algorithm produce a coherent narrative
-about what each parallel paradigm is good for.
-
-**OpenMP** is by far the easiest path to speedup on a single node — one
-`#pragma` over the inner loop yielded ~10× at 16 threads — but it
+**OpenMP** is by far the easiest path to speedup on a single node; one
+`#pragma` over the inner loop yielded ~10× at 16 threads. However, it
 inherits the host's memory hierarchy, so cache pressure and barrier
 imbalance bound the achievable efficiency. **MPI** unexpectedly
 dominated the CPU comparisons: by partitioning the matrix across two
 nodes' memory systems it broke the bandwidth wall that capped the
-serial and OpenMP runs, hitting 83× speedup at N=2048 — well above the
-naive 16× ideal. The lesson is that for memory-bound kernels,
+serial and OpenMP runs, hitting 83× speedup at N=2048, well above the
+naive 16× ideal. The takeaway here is that for memory-bound kernels,
 distributed memory is not just a way to add cores, it is a way to add
-*cache*. **CUDA** was the strongest absolute performer at scale (40
+cache. **CUDA** was the strongest absolute performer at scale (40
 GFLOP/s, 2× faster than 16-rank MPI at N=2048), but only after the
-problem was big enough to amortize the per-column launch overhead — and
+problem was big enough to amortize the per-column launch overhead;
 Nsight Systems made the single-step optimization (eliminate the
 diagonal D2H sync) immediately obvious. **mpi4py** delivered the same
 algorithm in half the lines of code at an 8–15× performance cost, a
@@ -316,19 +313,4 @@ useful data point about where Python's vectorisation story holds up
 (the inner update) and where it does not (a 1024-iteration Python-level
 outer loop).
 
-If I extended the project, the natural next step — and the one both
-profiles directly point to — is a **blocked right-looking
-factorization**. Replacing the column-by-column loop with a panel of
-width $b$ would batch $b$ columns of work into a single DSYRK/DGEMM
-call, which (i) cuts the OpenMP barrier count by $b\times$, (ii)
-amortizes MPI broadcasts over $b$ columns at once, and (iii) lets a
-single CUDA launch saturate the SMs without round-tripping through the
-host. That is essentially the LAPACK/cuSOLVER design, and the data here
-makes a convincing case for why it is worth the extra complexity.
-
-Across all five implementations, residuals stayed in the
-$10^{-12}$–$10^{-10}$ range — small enough that performance was the
-only axis that mattered. The real takeaway is qualitative: the same
-mathematical algorithm exposes wildly different bottlenecks under
-different parallel models, and a profiler is the fastest way to tell
-which bottleneck is yours.
+The performance data from both the CPU and GPU profiles suggests that the next logical progression is to transition from a column-by-column approach to a blocked implementation. By grouping columns into blocks (or panels), the algorithm would batch multiple operations into single, highly optimized mathematical calls. This architectural change would address the primary bottlenecks identified in this report by significantly reducing the synchronization frequency. In the OpenMP version, it would minimize the number of barriers where threads must wait. In the MPI version, it would allow for larger, more efficient data broadcasts across the network. And in the CUDA implementation, it would enable the GPU to process large workloads independently without constantly pausing to communicate with the host computer. Transitioning to this blocked design is essential to overcoming the current latency limits and achieving the full computational potential of the hardware.
